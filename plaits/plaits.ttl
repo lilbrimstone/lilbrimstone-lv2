@@ -1,0 +1,136 @@
+@prefix atom: <http://lv2plug.in/ns/ext/atom#> .
+@prefix doap: <http://usefulinc.com/ns/doap#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix lv2:  <http://lv2plug.in/ns/lv2core#> .
+@prefix midi: <http://lv2plug.in/ns/ext/midi#> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix urid: <http://lv2plug.in/ns/ext/urid#> .
+
+<https://github.com/lilbrimstone/plaits>
+    a lv2:InstrumentPlugin, lv2:Plugin ;
+    doap:name "LilBrimstone Plaits" ;
+    doap:license <http://opensource.org/licenses/mit> ;
+    doap:maintainer [ foaf:name "LilBrimstone" ] ;
+    lv2:requiredFeature urid:map ;
+
+    lv2:port [
+        a lv2:InputPort, atom:AtomPort ;
+        lv2:index 0 ;
+        lv2:symbol "midi_in" ;
+        lv2:name "MIDI In" ;
+        atom:bufferType atom:Sequence ;
+        atom:supports midi:MidiEvent
+    ] , [
+        a lv2:OutputPort, atom:AtomPort ;
+        lv2:index 1 ;
+        lv2:symbol "midi_out" ;
+        lv2:name "MIDI Out" ;
+        atom:bufferType atom:Sequence ;
+        atom:supports midi:MidiEvent
+    ] , [
+        a lv2:InputPort, lv2:AudioPort ;
+        lv2:index 2 ;
+        lv2:symbol "in_l" ;
+        lv2:name "In L"
+    ] , [
+        a lv2:InputPort, lv2:AudioPort ;
+        lv2:index 3 ;
+        lv2:symbol "in_r" ;
+        lv2:name "In R"
+    ] , [
+        a lv2:OutputPort, lv2:AudioPort ;
+        lv2:index 4 ;
+        lv2:symbol "out_l" ;
+        lv2:name "Out L"
+    ] , [
+        a lv2:OutputPort, lv2:AudioPort ;
+        lv2:index 5 ;
+        lv2:symbol "out_r" ;
+        lv2:name "Out R"
+    ] , [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 6 ;
+        lv2:symbol "engine" ;
+        lv2:name "Model" ;
+        lv2:default 0 ;
+        lv2:minimum 0 ;
+        lv2:maximum 23 ;
+        lv2:portProperty lv2:integer , lv2:enumeration ;
+        lv2:scalePoint [ rdfs:label "Virtual Analog VCF"; rdf:value 0 ] ;
+        lv2:scalePoint [ rdfs:label "Phase Distortion"; rdf:value 1 ] ;
+        lv2:scalePoint [ rdfs:label "Six Op FM 1"; rdf:value 2 ] ;
+        lv2:scalePoint [ rdfs:label "Six Op FM 2"; rdf:value 3 ] ;
+        lv2:scalePoint [ rdfs:label "Six Op FM 3"; rdf:value 4 ] ;
+        lv2:scalePoint [ rdfs:label "Wave Terrain"; rdf:value 5 ] ;
+        lv2:scalePoint [ rdfs:label "String Machine"; rdf:value 6 ] ;
+        lv2:scalePoint [ rdfs:label "Chiptune"; rdf:value 7 ] ;
+        lv2:scalePoint [ rdfs:label "Virtual Analog"; rdf:value 8 ] ;
+        lv2:scalePoint [ rdfs:label "Waveshaping"; rdf:value 9 ] ;
+        lv2:scalePoint [ rdfs:label "Two Op FM"; rdf:value 10 ] ;
+        lv2:scalePoint [ rdfs:label "Formant/Grain"; rdf:value 11 ] ;
+        lv2:scalePoint [ rdfs:label "Harmonic"; rdf:value 12 ] ;
+        lv2:scalePoint [ rdfs:label "Wavetable"; rdf:value 13 ] ;
+        lv2:scalePoint [ rdfs:label "Chord"; rdf:value 14 ] ;
+        lv2:scalePoint [ rdfs:label "Speech"; rdf:value 15 ] ;
+        lv2:scalePoint [ rdfs:label "Swarm"; rdf:value 16 ] ;
+        lv2:scalePoint [ rdfs:label "Noise"; rdf:value 17 ] ;
+        lv2:scalePoint [ rdfs:label "Particle"; rdf:value 18 ] ;
+        lv2:scalePoint [ rdfs:label "String"; rdf:value 19 ] ;
+        lv2:scalePoint [ rdfs:label "Modal"; rdf:value 20 ] ;
+        lv2:scalePoint [ rdfs:label "Bass Drum"; rdf:value 21 ] ;
+        lv2:scalePoint [ rdfs:label "Snare"; rdf:value 22 ] ;
+        lv2:scalePoint [ rdfs:label "Hi-Hat"; rdf:value 23 ] ;
+    ] , [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 7 ;
+        lv2:symbol "harmonics" ;
+        lv2:name "Harmonics" ;
+        lv2:default 0.5 ;
+        lv2:minimum 0.0 ;
+        lv2:maximum 1.0 ;
+    ] , [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 8 ;
+        lv2:symbol "timbre" ;
+        lv2:name "Timbre" ;
+        lv2:default 0.5 ;
+        lv2:minimum 0.0 ;
+        lv2:maximum 1.0 ;
+    ] , [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 9 ;
+        lv2:symbol "morph" ;
+        lv2:name "Morph" ;
+        lv2:default 0.5 ;
+        lv2:minimum 0.0 ;
+        lv2:maximum 1.0 ;
+    ] , [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 10 ;
+        lv2:symbol "decay" ;
+        lv2:name "Decay/Release" ;
+        lv2:default 0.5 ;
+        lv2:minimum 0.0 ;
+        lv2:maximum 1.0 ;
+    ] , [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 11 ;
+        lv2:symbol "lpg_colour" ;
+        lv2:name "LPG Color" ;
+        lv2:default 0.5 ;
+        lv2:minimum 0.0 ;
+        lv2:maximum 1.0 ;
+    ] , [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 12 ;
+        lv2:symbol "out_routing" ;
+        lv2:name "Output Routing" ;
+        lv2:default 1 ;
+        lv2:minimum 0 ;
+        lv2:maximum 2 ;
+        lv2:portProperty lv2:integer , lv2:enumeration ;
+        lv2:scalePoint [ rdfs:label "L:Main, R:Aux"; rdf:value 0 ] ;
+        lv2:scalePoint [ rdfs:label "Main"; rdf:value 1 ] ;
+        lv2:scalePoint [ rdfs:label "Aux"; rdf:value 2 ] ;
+    ] .

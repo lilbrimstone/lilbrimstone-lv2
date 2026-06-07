@@ -1,0 +1,2249 @@
+@prefix doap:  <http://usefulinc.com/ns/doap#> .
+@prefix lv2:   <http://lv2plug.in/ns/lv2core#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix units: <http://lv2plug.in/ns/extensions/units#> .
+@prefix atom:  <http://lv2plug.in/ns/ext/atom#> .
+@prefix midi:  <http://lv2plug.in/ns/ext/midi#> .
+@prefix urid:  <http://lv2plug.in/ns/ext/urid#> .
+
+<https://github.com/lilbrimstone/dexed>
+    a lv2:Plugin, lv2:InstrumentPlugin ;
+    lv2:binary <dexed.so> ;
+    doap:name "LilBrimstone Dexed" ;
+    lv2:optionalFeature lv2:hardRTCapable ;
+    lv2:requiredFeature urid:map ;
+
+    lv2:port [
+        a lv2:OutputPort, lv2:AudioPort ;
+        lv2:index 0 ;
+        lv2:symbol "out_l" ;
+        lv2:name "Out L" ;
+    ] , [
+        a lv2:OutputPort, lv2:AudioPort ;
+        lv2:index 1 ;
+        lv2:symbol "out_r" ;
+        lv2:name "Out R" ;
+    ] , [
+        a lv2:InputPort, atom:AtomPort ;
+        atom:bufferType atom:Sequence ;
+        atom:supports midi:MidiEvent ;
+        lv2:index 2 ;
+        lv2:symbol "midi_in" ;
+        lv2:name "MIDI In" ;
+    ] , [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 3 ;
+        lv2:symbol "gain" ;
+        lv2:name "Gain" ;
+        lv2:default 1.0 ;
+        lv2:minimum 0.0 ;
+        lv2:maximum 2.0 ;
+    ] , [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 4 ;
+        lv2:symbol "octave" ;
+        lv2:name "Octave" ;
+        lv2:default 0 ;
+        lv2:minimum -3 ;
+        lv2:maximum 3 ;
+        lv2:portProperty lv2:integer ;
+    ] , [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 5 ;
+        lv2:symbol "preset" ;
+        lv2:name "Preset" ;
+        lv2:default 0 ;
+        lv2:minimum 0 ;
+        lv2:maximum 511 ;
+        lv2:portProperty lv2:integer, lv2:enumeration ;
+        lv2:scalePoint [
+            rdfs:label "0: PIANO    1" ;
+            rdf:value 0
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "1: PIANO    2" ;
+            rdf:value 1
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "2: PIANO    3" ;
+            rdf:value 2
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "3: HONKEY.P.F" ;
+            rdf:value 3
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "4: PLEPIARD" ;
+            rdf:value 4
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "5: PIANO-CP" ;
+            rdf:value 5
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "6: E.PIANO  1" ;
+            rdf:value 6
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "7: E.PIANO  2" ;
+            rdf:value 7
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "8: E.PIANO  3" ;
+            rdf:value 8
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "9: E.PIANO  4" ;
+            rdf:value 9
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "10: CEMBALO  1" ;
+            rdf:value 10
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "11: CEMBALO  2" ;
+            rdf:value 11
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "12: E-CEMBALO" ;
+            rdf:value 12
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "13: CLAVI.   1" ;
+            rdf:value 13
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "14: CLAVI.   2" ;
+            rdf:value 14
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "15: CLAVI.   3" ;
+            rdf:value 15
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "16: CLAVI.   4" ;
+            rdf:value 16
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "17: CELESTE  1" ;
+            rdf:value 17
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "18: CELESTE  2" ;
+            rdf:value 18
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "19: AC.GUITAR1" ;
+            rdf:value 19
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "20: AC.GUITAR2" ;
+            rdf:value 20
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "21: AC.GUITAR3" ;
+            rdf:value 21
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "22: AC.GUITAR4" ;
+            rdf:value 22
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "23: 12S.GUITAR" ;
+            rdf:value 23
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "24: E.GUITAR 1" ;
+            rdf:value 24
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "25: E.GUITAR 2" ;
+            rdf:value 25
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "26: E.GUITAR 3" ;
+            rdf:value 26
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "27: E.GUITAR 4" ;
+            rdf:value 27
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "28: E.GUITAR 5" ;
+            rdf:value 28
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "29: E.BASS   1" ;
+            rdf:value 29
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "30: E.BASS   2" ;
+            rdf:value 30
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "31: E.BASS   3" ;
+            rdf:value 31
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "32: E.BASS   4" ;
+            rdf:value 32
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "33: E.BASS   5" ;
+            rdf:value 33
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "34: SYN.BASS 1" ;
+            rdf:value 34
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "35: SYN.BASS 2" ;
+            rdf:value 35
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "36: SYN.BASS 3" ;
+            rdf:value 36
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "37: SYN.BASS 4" ;
+            rdf:value 37
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "38: SYN.BASS 5" ;
+            rdf:value 38
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "39: SYN.BASS 6" ;
+            rdf:value 39
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "40: W.BASS   1" ;
+            rdf:value 40
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "41: W.BASS   2" ;
+            rdf:value 41
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "42: W.BASS   3" ;
+            rdf:value 42
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "43: W.BASS   4" ;
+            rdf:value 43
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "44: ZITAR" ;
+            rdf:value 44
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "45: ZIMBALONE" ;
+            rdf:value 45
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "46: BAMBOO MAR" ;
+            rdf:value 46
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "47: KARIMBA" ;
+            rdf:value 47
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "48: MANDOLIN 1" ;
+            rdf:value 48
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "49: MANDOLIN 2" ;
+            rdf:value 49
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "50: SITAR" ;
+            rdf:value 50
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "51: BANJO    1" ;
+            rdf:value 51
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "52: BANJO    2" ;
+            rdf:value 52
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "53: CHALANGO" ;
+            rdf:value 53
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "54: SHIYAMISEN" ;
+            rdf:value 54
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "55: BIWA" ;
+            rdf:value 55
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "56: VIB.    1" ;
+            rdf:value 56
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "57: VIB.    2" ;
+            rdf:value 57
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "58: GLOCKEN  1" ;
+            rdf:value 58
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "59: GLOCKEN  2" ;
+            rdf:value 59
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "60: XYLOPHONE" ;
+            rdf:value 60
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "61: MARIMBA" ;
+            rdf:value 61
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "62: HANDBELL 1" ;
+            rdf:value 62
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "63: HANDBELL 2" ;
+            rdf:value 63
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "64: PICCOLO  1" ;
+            rdf:value 64
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "65: PICCOLO  2" ;
+            rdf:value 65
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "66: FLUTE    1" ;
+            rdf:value 66
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "67: FLUTE    2" ;
+            rdf:value 67
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "68: FLUTE    3" ;
+            rdf:value 68
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "69: ALTO FLUTE" ;
+            rdf:value 69
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "70: BASS FLUTE" ;
+            rdf:value 70
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "71: OBOE     1" ;
+            rdf:value 71
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "72: OBOE     2" ;
+            rdf:value 72
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "73: ENG.HORN" ;
+            rdf:value 73
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "74: CLARINET 1" ;
+            rdf:value 74
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "75: CLARINET 2" ;
+            rdf:value 75
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "76: CLARINET 3" ;
+            rdf:value 76
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "77: BASS CLA." ;
+            rdf:value 77
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "78: BASSOON  1" ;
+            rdf:value 78
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "79: BASSOON  2" ;
+            rdf:value 79
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "80: BASSOON  3" ;
+            rdf:value 80
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "81: SAXOPHONE1" ;
+            rdf:value 81
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "82: SAXOPHONE2" ;
+            rdf:value 82
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "83: SAXOPHONE3" ;
+            rdf:value 83
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "84: SAXOPHONE4" ;
+            rdf:value 84
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "85: HORN     1" ;
+            rdf:value 85
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "86: HORN     2" ;
+            rdf:value 86
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "87: HORN     3" ;
+            rdf:value 87
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "88: HORN     4" ;
+            rdf:value 88
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "89: HORN     5" ;
+            rdf:value 89
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "90: TRUMPET  1" ;
+            rdf:value 90
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "91: TRUMPET  2" ;
+            rdf:value 91
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "92: TRUMPET  3" ;
+            rdf:value 92
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "93: TRUMPET  4" ;
+            rdf:value 93
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "94: TRUMPET  5" ;
+            rdf:value 94
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "95: TRUMPET  6" ;
+            rdf:value 95
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "96: TRUMPET  7" ;
+            rdf:value 96
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "97: P.TRUMPET" ;
+            rdf:value 97
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "98: TPT.MUTE 1" ;
+            rdf:value 98
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "99: TPT.MUTE 2" ;
+            rdf:value 99
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "100: FLUGELHORN" ;
+            rdf:value 100
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "101: TROMBONE 1" ;
+            rdf:value 101
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "102: TROMBONE 2" ;
+            rdf:value 102
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "103: TROMBONE 3" ;
+            rdf:value 103
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "104: TRB.MUTE 1" ;
+            rdf:value 104
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "105: TRB.MUTE 2" ;
+            rdf:value 105
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "106: TUBA" ;
+            rdf:value 106
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "107: RECORDER" ;
+            rdf:value 107
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "108: T.RECORDER" ;
+            rdf:value 108
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "109: OCARINA" ;
+            rdf:value 109
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "110: QUENA" ;
+            rdf:value 110
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "111: BAMBOO FL." ;
+            rdf:value 111
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "112: PANFLUTE1" ;
+            rdf:value 112
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "113: PANFLUTE2" ;
+            rdf:value 113
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "114: BAGPIPE" ;
+            rdf:value 114
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "115: HARMONICA1" ;
+            rdf:value 115
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "116: HARMONICA2" ;
+            rdf:value 116
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "117: ACCORDION1" ;
+            rdf:value 117
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "118: ACCORDION2" ;
+            rdf:value 118
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "119: BRASS EN.1" ;
+            rdf:value 119
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "120: BRASS EN.2" ;
+            rdf:value 120
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "121: BRASS EN.3" ;
+            rdf:value 121
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "122: BRASS EN.4" ;
+            rdf:value 122
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "123: BRASS EN.5" ;
+            rdf:value 123
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "124: BRASS EN.6" ;
+            rdf:value 124
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "125: BRASS EN.7" ;
+            rdf:value 125
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "126: WIND ENS.1" ;
+            rdf:value 126
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "127: WIND ENS.2" ;
+            rdf:value 127
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "128: VIOLIN   1" ;
+            rdf:value 128
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "129: VIOLIN   2" ;
+            rdf:value 129
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "130: VIOLIN   3" ;
+            rdf:value 130
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "131: VIOLIN   4" ;
+            rdf:value 131
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "132: CELLO    1" ;
+            rdf:value 132
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "133: CELLO    2" ;
+            rdf:value 133
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "134: CONTRABASS" ;
+            rdf:value 134
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "135: STRINGS  1" ;
+            rdf:value 135
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "136: STRINGS  2" ;
+            rdf:value 136
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "137: STRINGS  3" ;
+            rdf:value 137
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "138: STRINGS  4" ;
+            rdf:value 138
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "139: STRINGS  5" ;
+            rdf:value 139
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "140: STRINGS  6" ;
+            rdf:value 140
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "141: STRINGS  7" ;
+            rdf:value 141
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "142: STRINGS  8" ;
+            rdf:value 142
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "143: STRINGS  9" ;
+            rdf:value 143
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "144: STRINGS 10" ;
+            rdf:value 144
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "145: STRINGS 11" ;
+            rdf:value 145
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "146: STR.PIZZ.1" ;
+            rdf:value 146
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "147: STR.PIZZ.2" ;
+            rdf:value 147
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "148: STR.PIZZ.3" ;
+            rdf:value 148
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "149: STR.PIZZ.4" ;
+            rdf:value 149
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "150: M. VOICE 1" ;
+            rdf:value 150
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "151: M. VOICE 2" ;
+            rdf:value 151
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "152: M. VOICE 3" ;
+            rdf:value 152
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "153: M. VOICE 4" ;
+            rdf:value 153
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "154: M. VOICE 5" ;
+            rdf:value 154
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "155: M. VOICE 6" ;
+            rdf:value 155
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "156: F. VOICE 1" ;
+            rdf:value 156
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "157: F. VOICE 2" ;
+            rdf:value 157
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "158: F. VOICE 3" ;
+            rdf:value 158
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "159: F. VOICE 4" ;
+            rdf:value 159
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "160: M.CHORUS 1" ;
+            rdf:value 160
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "161: M.CHORUS 2" ;
+            rdf:value 161
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "162: M.CHORUS 3" ;
+            rdf:value 162
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "163: M.CHORUS 4" ;
+            rdf:value 163
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "164: F.CHORUS 1" ;
+            rdf:value 164
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "165: F.CHORUS 2" ;
+            rdf:value 165
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "166: F.CHORUS 3" ;
+            rdf:value 166
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "167: CHORUS   1" ;
+            rdf:value 167
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "168: CHORUS   2" ;
+            rdf:value 168
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "169: CHORUS   3" ;
+            rdf:value 169
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "170: CHORUS   4" ;
+            rdf:value 170
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "171: CHORUS   5" ;
+            rdf:value 171
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "172: CHORUS   6" ;
+            rdf:value 172
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "173: VOC.VOICE" ;
+            rdf:value 173
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "174: WHISTLE  1" ;
+            rdf:value 174
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "175: WHISTLE  2" ;
+            rdf:value 175
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "176: E. ORGAN 1" ;
+            rdf:value 176
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "177: E. ORGAN 2" ;
+            rdf:value 177
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "178: E. ORGAN 3" ;
+            rdf:value 178
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "179: E. ORGAN 4" ;
+            rdf:value 179
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "180: E. ORGAN 5" ;
+            rdf:value 180
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "181: E. ORGAN 6" ;
+            rdf:value 181
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "182: E. ORGAN 7" ;
+            rdf:value 182
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "183: E. ORGAN 8" ;
+            rdf:value 183
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "184: E. ORGAN 9" ;
+            rdf:value 184
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "185: E. ORGAN10" ;
+            rdf:value 185
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "186: BARREL ORG" ;
+            rdf:value 186
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "187: PIPE ORG.1" ;
+            rdf:value 187
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "188: PIPE ORG.2" ;
+            rdf:value 188
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "189: PIPE ORG.3" ;
+            rdf:value 189
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "190: PIPE ORG.4" ;
+            rdf:value 190
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "191: PIPE ORG.5" ;
+            rdf:value 191
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "192: DRUMS" ;
+            rdf:value 192
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "193: SNARE DR.1" ;
+            rdf:value 193
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "194: SNARE DR.2" ;
+            rdf:value 194
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "195: TOM-TOM  1" ;
+            rdf:value 195
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "196: TOM-TOM  2" ;
+            rdf:value 196
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "197: BASS DR. 1" ;
+            rdf:value 197
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "198: BASS DR. 2" ;
+            rdf:value 198
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "199: SIZ. CYMB." ;
+            rdf:value 199
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "200: HI-HAT" ;
+            rdf:value 200
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "201: E. DRUMS 1" ;
+            rdf:value 201
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "202: E. DRUMS 2" ;
+            rdf:value 202
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "203: E. DRUMS 3" ;
+            rdf:value 203
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "204: E. DRUMS 4" ;
+            rdf:value 204
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "205: E. DRUMS 5" ;
+            rdf:value 205
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "206: TIMBALES 1" ;
+            rdf:value 206
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "207: TIMBALES 2" ;
+            rdf:value 207
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "208: CONGAS   1" ;
+            rdf:value 208
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "209: CONGAS   2" ;
+            rdf:value 209
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "210: JPN.DRUM 1" ;
+            rdf:value 210
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "211: JPN.DRUM 2" ;
+            rdf:value 211
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "212: JPN.DRUM 3" ;
+            rdf:value 212
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "213: JPN.DRUM 4" ;
+            rdf:value 213
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "214: QUIEKER" ;
+            rdf:value 214
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "215: TIMPANI  1" ;
+            rdf:value 215
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "216: TIMPANI  2" ;
+            rdf:value 216
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "217: HAND CLAP1" ;
+            rdf:value 217
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "218: HAND CLAP2" ;
+            rdf:value 218
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "219: TAP SLAP" ;
+            rdf:value 219
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "220: W. BLOCK 1" ;
+            rdf:value 220
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "221: W. BLOCK 2" ;
+            rdf:value 221
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "222: CASTANET 1" ;
+            rdf:value 222
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "223: CASTANET 2" ;
+            rdf:value 223
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "224: CLAVES" ;
+            rdf:value 224
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "225: GUIRO" ;
+            rdf:value 225
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "226: MARACAS" ;
+            rdf:value 226
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "227: KABASA" ;
+            rdf:value 227
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "228: TAMBLN.  1" ;
+            rdf:value 228
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "229: TAMBLN.  2" ;
+            rdf:value 229
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "230: SAMBA WHIS" ;
+            rdf:value 230
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "231: TRIANGLE 1" ;
+            rdf:value 231
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "232: TRIANGLE 2" ;
+            rdf:value 232
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "233: BELL TREE" ;
+            rdf:value 233
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "234: SMALL BELL" ;
+            rdf:value 234
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "235: AGOGO" ;
+            rdf:value 235
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "236: GONG" ;
+            rdf:value 236
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "237: COW BELL 1" ;
+            rdf:value 237
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "238: COW BELL 2" ;
+            rdf:value 238
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "239: COW BELL 3" ;
+            rdf:value 239
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "240: WIND BELL1" ;
+            rdf:value 240
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "241: WIND BELL2" ;
+            rdf:value 241
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "242: STEEL DRUM" ;
+            rdf:value 242
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "243: GLASSHARP1" ;
+            rdf:value 243
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "244: GLASSHARP2" ;
+            rdf:value 244
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "245: REV.CYMB 1" ;
+            rdf:value 245
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "246: REV.CYMB 2" ;
+            rdf:value 246
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "247: SYN.PERC.1" ;
+            rdf:value 247
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "248: SYN.PERC.2" ;
+            rdf:value 248
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "249: SYN.PERC.3" ;
+            rdf:value 249
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "250: SYN.PERC.4" ;
+            rdf:value 250
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "251: SYN.PERC.5" ;
+            rdf:value 251
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "252: SYN.PERC.6" ;
+            rdf:value 252
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "253: SYN.PERC.7" ;
+            rdf:value 253
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "254: SYN.PERC.8" ;
+            rdf:value 254
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "255: SYN.PERC.9" ;
+            rdf:value 255
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "256: HEAVY RAIN" ;
+            rdf:value 256
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "257: THUNDER" ;
+            rdf:value 257
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "258: STORM    1" ;
+            rdf:value 258
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "259: STORM    2" ;
+            rdf:value 259
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "260: WATERDROP" ;
+            rdf:value 260
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "261: BUBBLES" ;
+            rdf:value 261
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "262: WAVE     1" ;
+            rdf:value 262
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "263: WAVE     2" ;
+            rdf:value 263
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "264: WAVE     3" ;
+            rdf:value 264
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "265: WAVE     4" ;
+            rdf:value 265
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "266: RUMB.EARTH" ;
+            rdf:value 266
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "267: EXPLOSION1" ;
+            rdf:value 267
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "268: EXPLOSION2" ;
+            rdf:value 268
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "269: MAC.GUN  1" ;
+            rdf:value 269
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "270: MAC.GUN  2" ;
+            rdf:value 270
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "271: MOBILE   1" ;
+            rdf:value 271
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "272: MOBILE   2" ;
+            rdf:value 272
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "273: KLAXON" ;
+            rdf:value 273
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "274: MOTERCYCLE" ;
+            rdf:value 274
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "275: AMBULANCE" ;
+            rdf:value 275
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "276: PATROL CAR" ;
+            rdf:value 276
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "277: SIREN" ;
+            rdf:value 277
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "278: PLAIN    1" ;
+            rdf:value 278
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "279: PLAIN    2" ;
+            rdf:value 279
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "280: HELICOPTER" ;
+            rdf:value 280
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "281: LOCOMOTIVE" ;
+            rdf:value 281
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "282: SHIP......" ;
+            rdf:value 282
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "283: TEL CALL 1" ;
+            rdf:value 283
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "284: TEL CALL 2" ;
+            rdf:value 284
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "285: BELL......" ;
+            rdf:value 285
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "286: PI.PO.PA." ;
+            rdf:value 286
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "287: ALARM!" ;
+            rdf:value 287
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "288: DOG" ;
+            rdf:value 288
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "289: BABY CAT" ;
+            rdf:value 289
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "290: INSECTS  1" ;
+            rdf:value 290
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "291: INSECTS  2" ;
+            rdf:value 291
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "292: INSECTS  3" ;
+            rdf:value 292
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "293: BIRD     1" ;
+            rdf:value 293
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "294: BIRD     2" ;
+            rdf:value 294
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "295: BIRD     3" ;
+            rdf:value 295
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "296: BIRD     4" ;
+            rdf:value 296
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "297: HEART BEAT" ;
+            rdf:value 297
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "298: TYPEWRITER" ;
+            rdf:value 298
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "299: CLOSING" ;
+            rdf:value 299
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "300: FACTORY" ;
+            rdf:value 300
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "301: ROBOT" ;
+            rdf:value 301
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "302: TEMP.BELL1" ;
+            rdf:value 302
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "303: TEMP.BELL2" ;
+            rdf:value 303
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "304: CHURCHBELL" ;
+            rdf:value 304
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "305: BIG BEN" ;
+            rdf:value 305
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "306: IMAGE    1" ;
+            rdf:value 306
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "307: IMAGE    2" ;
+            rdf:value 307
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "308: IMAGE    3" ;
+            rdf:value 308
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "309: IMAGE    4" ;
+            rdf:value 309
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "310: IMAGE    5" ;
+            rdf:value 310
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "311: IMAGE    6" ;
+            rdf:value 311
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "312: IMAGE    7" ;
+            rdf:value 312
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "313: IMAGE    8" ;
+            rdf:value 313
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "314: IMAGE    9" ;
+            rdf:value 314
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "315: IMAGE   10" ;
+            rdf:value 315
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "316: IMAGE   11" ;
+            rdf:value 316
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "317: IMAGE   12" ;
+            rdf:value 317
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "318: IMAGE   13" ;
+            rdf:value 318
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "319: IMAGE   14" ;
+            rdf:value 319
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "320: SYN.STR. 1" ;
+            rdf:value 320
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "321: SYN.STR. 2" ;
+            rdf:value 321
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "322: SYN.STR. 3" ;
+            rdf:value 322
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "323: SYN.STR. 4" ;
+            rdf:value 323
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "324: SYN.STR. 5" ;
+            rdf:value 324
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "325: SYN.STR. 6" ;
+            rdf:value 325
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "326: SYN.STR. 7" ;
+            rdf:value 326
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "327: SYN.STR. 8" ;
+            rdf:value 327
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "328: SYN.STR. 9" ;
+            rdf:value 328
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "329: SYN.STR.10" ;
+            rdf:value 329
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "330: SYN.STR.11" ;
+            rdf:value 330
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "331: SYN.STR.12" ;
+            rdf:value 331
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "332: SYN.STR.13" ;
+            rdf:value 332
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "333: SYN.BRA. 1" ;
+            rdf:value 333
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "334: SYN.BRA. 2" ;
+            rdf:value 334
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "335: SYN.BRA. 3" ;
+            rdf:value 335
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "336: SYN.BRA. 4" ;
+            rdf:value 336
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "337: SYN.BRA. 5" ;
+            rdf:value 337
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "338: SYN.BRA. 6" ;
+            rdf:value 338
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "339: SYN.BRA. 7" ;
+            rdf:value 339
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "340: SYN.BRA. 8" ;
+            rdf:value 340
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "341: SYN.BRA. 9" ;
+            rdf:value 341
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "342: SYN.BRA.10" ;
+            rdf:value 342
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "343: SYN.BRA.11" ;
+            rdf:value 343
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "344: SYN.BRA.12" ;
+            rdf:value 344
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "345: SYN.BRA.13" ;
+            rdf:value 345
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "346: SYN.LEAD 1" ;
+            rdf:value 346
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "347: SYN.LEAD 2" ;
+            rdf:value 347
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "348: SYN.LEAD 3" ;
+            rdf:value 348
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "349: SYN.LEAD 4" ;
+            rdf:value 349
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "350: SYN.LEAD 5" ;
+            rdf:value 350
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "351: SYN.LEAD 6" ;
+            rdf:value 351
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "352: SYN.BASS 7" ;
+            rdf:value 352
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "353: SYN.BASS 8" ;
+            rdf:value 353
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "354: SYN.BASS 9" ;
+            rdf:value 354
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "355: SYN.BASS10" ;
+            rdf:value 355
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "356: SYN. VOX 1" ;
+            rdf:value 356
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "357: SYN. VOX 2" ;
+            rdf:value 357
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "358: SYN. VOX 3" ;
+            rdf:value 358
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "359: SYN. VOX 4" ;
+            rdf:value 359
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "360: SYN. VOX 5" ;
+            rdf:value 360
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "361: SYN. VOX 6" ;
+            rdf:value 361
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "362: SYN.ORG. 1" ;
+            rdf:value 362
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "363: SYN.ORG. 2" ;
+            rdf:value 363
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "364: SYN.ORG. 3" ;
+            rdf:value 364
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "365: SYN.ORG. 4" ;
+            rdf:value 365
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "366: SYN.ORG. 5" ;
+            rdf:value 366
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "367: SYN.ORG. 6" ;
+            rdf:value 367
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "368: SYN.MARIM." ;
+            rdf:value 368
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "369: SYN.CLAVI." ;
+            rdf:value 369
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "370: SYN.HARMO." ;
+            rdf:value 370
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "371: SYN.ORCHE." ;
+            rdf:value 371
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "372: SYN.CHIM.1" ;
+            rdf:value 372
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "373: SYN.CHIM.2" ;
+            rdf:value 373
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "374: SYN.S.DRUM" ;
+            rdf:value 374
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "375: SYN.RECOR." ;
+            rdf:value 375
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "376: SYN.GUITAR" ;
+            rdf:value 376
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "377: SYN.FLUTE" ;
+            rdf:value 377
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "378: SYN.XYLOPH" ;
+            rdf:value 378
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "379: SYN.SITAR" ;
+            rdf:value 379
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "380: SYN.GLOC.1" ;
+            rdf:value 380
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "381: SYN.GLOC.2" ;
+            rdf:value 381
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "382: SYN.GLOC.3" ;
+            rdf:value 382
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "383: SYN.GLOC.4" ;
+            rdf:value 383
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "384: Chorus PNO" ;
+            rdf:value 384
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "385: Tight  PNO" ;
+            rdf:value 385
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "386: Rock   PNO" ;
+            rdf:value 386
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "387: School PNO" ;
+            rdf:value 387
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "388: Wire   PNO" ;
+            rdf:value 388
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "389: <Pop> Epno" ;
+            rdf:value 389
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "390: <Brr> Epno" ;
+            rdf:value 390
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "391: <Wap> Epno" ;
+            rdf:value 391
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "392: <Puf> Orgn" ;
+            rdf:value 392
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "393: <Tap> Orgn" ;
+            rdf:value 393
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "394: <Big> Orgn" ;
+            rdf:value 394
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "395: Magicorgan" ;
+            rdf:value 395
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "396: Bigpipes" ;
+            rdf:value 396
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "397: <FM>alog 1" ;
+            rdf:value 397
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "398: <FM>alog 2" ;
+            rdf:value 398
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "399: <FM>alog 3" ;
+            rdf:value 399
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "400: <Pluk>   1" ;
+            rdf:value 400
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "401: <Pluk>   2" ;
+            rdf:value 401
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "402: <Pluk>   3" ;
+            rdf:value 402
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "403: Hav-a-Clav" ;
+            rdf:value 403
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "404: Magiklav" ;
+            rdf:value 404
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "405: Tenor  vox" ;
+            rdf:value 405
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "406: Lady   vox" ;
+            rdf:value 406
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "407: Vocoda vox" ;
+            rdf:value 407
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "408: Wahhh  vox" ;
+            rdf:value 408
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "409: Elec Brass" ;
+            rdf:value 409
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "410: Elec Viola" ;
+            rdf:value 410
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "411: Violin" ;
+            rdf:value 411
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "412: Hall Orch" ;
+            rdf:value 412
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "413: 1 fifth up" ;
+            rdf:value 413
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "414: Magiglokkk" ;
+            rdf:value 414
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "415: Magivybe" ;
+            rdf:value 415
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "416: Fingapikka" ;
+            rdf:value 416
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "417: Leadapikka" ;
+            rdf:value 417
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "418: Steelypika" ;
+            rdf:value 418
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "419: Classipika" ;
+            rdf:value 419
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "420: Harpsipika" ;
+            rdf:value 420
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "421: Pan floot" ;
+            rdf:value 421
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "422: Huffsynth" ;
+            rdf:value 422
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "423: Trompe" ;
+            rdf:value 423
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "424: Englishorn" ;
+            rdf:value 424
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "425: Harmosynth" ;
+            rdf:value 425
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "426: <FM>alog 4" ;
+            rdf:value 426
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "427: Backtalk" ;
+            rdf:value 427
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "428: Newtrumpet" ;
+            rdf:value 428
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "429: Elec comb" ;
+            rdf:value 429
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "430: Touchbend" ;
+            rdf:value 430
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "431: Bell<Wahh>" ;
+            rdf:value 431
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "432: Bowed bell" ;
+            rdf:value 432
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "433: Ting voice" ;
+            rdf:value 433
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "434: Cymbal" ;
+            rdf:value 434
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "435: Rubbergong" ;
+            rdf:value 435
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "436: Long gong" ;
+            rdf:value 436
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "437: Smooh bass" ;
+            rdf:value 437
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "438: Bowed bass" ;
+            rdf:value 438
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "439: Oww bass" ;
+            rdf:value 439
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "440: Bass bass" ;
+            rdf:value 440
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "441: Flunk bass" ;
+            rdf:value 441
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "442: Chain saw" ;
+            rdf:value 442
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "443: Tambourine" ;
+            rdf:value 443
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "444: Thunderon" ;
+            rdf:value 444
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "445: <<Smash>>" ;
+            rdf:value 445
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "446: Handrum" ;
+            rdf:value 446
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "447: Congadrum" ;
+            rdf:value 447
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "448: PickGuitar" ;
+            rdf:value 448
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "449: SongFlute" ;
+            rdf:value 449
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "450: NewCeleste" ;
+            rdf:value 450
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "451: PianoBells" ;
+            rdf:value 451
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "452: MellowHorn" ;
+            rdf:value 452
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "453: MilkyWays" ;
+            rdf:value 453
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "454: Xylo-Brass" ;
+            rdf:value 454
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "455: Rosin-Bows" ;
+            rdf:value 455
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "456: WireStrung" ;
+            rdf:value 456
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "457: DblTrumpet" ;
+            rdf:value 457
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "458: FullTines" ;
+            rdf:value 458
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "459: Harpsi-Box" ;
+            rdf:value 459
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "460: }HardBass{" ;
+            rdf:value 460
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "461: PianoForte" ;
+            rdf:value 461
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "462: Good-Vibes" ;
+            rdf:value 462
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "463: Analog-DX7" ;
+            rdf:value 463
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "464: SpitFlute" ;
+            rdf:value 464
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "465: St.Elmo's" ;
+            rdf:value 465
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "466: Carolines" ;
+            rdf:value 466
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "467: HarpStrum" ;
+            rdf:value 467
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "468: ClaviPluck" ;
+            rdf:value 468
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "469: MalletHorn" ;
+            rdf:value 469
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "470: RaspySax" ;
+            rdf:value 470
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "471: HollowHits" ;
+            rdf:value 471
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "472: Hard~Tines" ;
+            rdf:value 472
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "473: FunkyPluck" ;
+            rdf:value 473
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "474: Whap-Synth" ;
+            rdf:value 474
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "475: SoloTrumpt" ;
+            rdf:value 475
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "476: ReverbStrg" ;
+            rdf:value 476
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "477: TouchOrg-1" ;
+            rdf:value 477
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "478: TouchOrg-2" ;
+            rdf:value 478
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "479: FM-Growth" ;
+            rdf:value 479
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "480: ClaviStuff" ;
+            rdf:value 480
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "481: EchoMallet" ;
+            rdf:value 481
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "482: SteelCans" ;
+            rdf:value 482
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "483: TackyPiano" ;
+            rdf:value 483
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "484: PlukGuitar" ;
+            rdf:value 484
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "485: HighStrung" ;
+            rdf:value 485
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "486: ChimeTines" ;
+            rdf:value 486
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "487: SoftFrench" ;
+            rdf:value 487
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "488: CongaClave" ;
+            rdf:value 488
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "489: Clave-Drum" ;
+            rdf:value 489
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "490: WoodSimmon" ;
+            rdf:value 490
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "491: CastePiano" ;
+            rdf:value 491
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "492: PianoFlute" ;
+            rdf:value 492
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "493: NeWaveOrgn" ;
+            rdf:value 493
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "494: ChorusRing" ;
+            rdf:value 494
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "495: EmerSynth" ;
+            rdf:value 495
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "496: SoftPiano" ;
+            rdf:value 496
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "497: Tine~Brass" ;
+            rdf:value 497
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "498: Orgn~Brass" ;
+            rdf:value 498
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "499: BCTrumpet" ;
+            rdf:value 499
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "500: Xylophonk" ;
+            rdf:value 500
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "501: SassyBrass" ;
+            rdf:value 501
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "502: ComicSiren" ;
+            rdf:value 502
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "503: Bugs&Birds" ;
+            rdf:value 503
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "504: RainDrops" ;
+            rdf:value 504
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "505: Speak-One" ;
+            rdf:value 505
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "506: Speak-Two" ;
+            rdf:value 506
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "507: Speak-Thre" ;
+            rdf:value 507
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "508: Speak-Four" ;
+            rdf:value 508
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "509: What?One?" ;
+            rdf:value 509
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "510: FM~Teapot" ;
+            rdf:value 510
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "511: TapeRewind" ;
+            rdf:value 511
+        ] ;
+    ] , [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 6 ;
+        lv2:symbol "algo" ;
+        lv2:name "Algorithm" ;
+        lv2:default 0 ;
+        lv2:minimum 0 ;
+        lv2:maximum 32 ;
+        lv2:portProperty lv2:integer, lv2:enumeration ;
+        lv2:scalePoint [
+            rdfs:label "0: Preset" ;
+            rdf:value 0
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "1" ;
+            rdf:value 1
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "2" ;
+            rdf:value 2
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "3" ;
+            rdf:value 3
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "4" ;
+            rdf:value 4
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "5" ;
+            rdf:value 5
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "6" ;
+            rdf:value 6
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "7" ;
+            rdf:value 7
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "8" ;
+            rdf:value 8
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "9" ;
+            rdf:value 9
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "10" ;
+            rdf:value 10
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "11" ;
+            rdf:value 11
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "12" ;
+            rdf:value 12
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "13" ;
+            rdf:value 13
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "14" ;
+            rdf:value 14
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "15" ;
+            rdf:value 15
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "16" ;
+            rdf:value 16
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "17" ;
+            rdf:value 17
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "18" ;
+            rdf:value 18
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "19" ;
+            rdf:value 19
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "20" ;
+            rdf:value 20
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "21" ;
+            rdf:value 21
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "22" ;
+            rdf:value 22
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "23" ;
+            rdf:value 23
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "24" ;
+            rdf:value 24
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "25" ;
+            rdf:value 25
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "26" ;
+            rdf:value 26
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "27" ;
+            rdf:value 27
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "28" ;
+            rdf:value 28
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "29" ;
+            rdf:value 29
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "30" ;
+            rdf:value 30
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "31" ;
+            rdf:value 31
+        ] ;
+        lv2:scalePoint [
+            rdfs:label "32" ;
+            rdf:value 32
+        ] ;
+    ] .

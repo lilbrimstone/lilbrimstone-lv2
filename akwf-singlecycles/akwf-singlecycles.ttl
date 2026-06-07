@@ -1,0 +1,305 @@
+@prefix atom:  <http://lv2plug.in/ns/ext/atom#> .
+@prefix doap:  <http://usefulinc.com/ns/doap#> .
+@prefix lv2:   <http://lv2plug.in/ns/lv2core#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix urid:  <http://lv2plug.in/ns/ext/urid#> .
+@prefix time:  <http://lv2plug.in/ns/ext/time#> .
+@prefix midi:  <http://lv2plug.in/ns/ext/midi#> .
+@prefix pprop: <http://lv2plug.in/ns/ext/port-props#> .
+
+<https://github.com/lilbrimstone/akwf-singlecycles>
+    a lv2:Plugin ;
+    a lv2:InstrumentPlugin ;
+    doap:name "LilBrimstone AKWF Single Cycles" ;
+    lv2:requiredFeature urid:map ;
+    
+    lv2:port [
+        a lv2:InputPort ;
+        a atom:AtomPort ;
+        lv2:index 0 ;
+        lv2:symbol "midi_in" ;
+        lv2:name "MIDI In" ;
+        atom:bufferType atom:Sequence ;
+        atom:supports midi:MidiEvent , time:Position ;
+    ] , [
+        a lv2:OutputPort ;
+        a atom:AtomPort ;
+        lv2:index 1 ;
+        lv2:symbol "midi_out" ;
+        lv2:name "MIDI Out" ;
+        atom:bufferType atom:Sequence ;
+        atom:supports midi:MidiEvent ;
+    ] , [
+        a lv2:AudioPort ;
+        a lv2:OutputPort ;
+        lv2:index 2 ;
+        lv2:symbol "out_l" ;
+        lv2:name "Out L" ;
+    ] , [
+        a lv2:AudioPort ;
+        a lv2:OutputPort ;
+        lv2:index 3 ;
+        lv2:symbol "out_r" ;
+        lv2:name "Out R" ;
+    ] , [
+        a lv2:InputPort ;
+        a lv2:ControlPort ;
+        lv2:index 4 ;
+        lv2:symbol "folder_a" ;
+        lv2:name "Folder A" ;
+        lv2:portProperty lv2:integer ;
+        lv2:portProperty lv2:enumeration ;
+        lv2:default 0 ;
+        lv2:minimum 0 ;
+        lv2:maximum 64 ;
+        lv2:scalePoint [ rdfs:label "0001" ; rdf:value 0 ] ;
+        lv2:scalePoint [ rdfs:label "0002" ; rdf:value 1 ] ;
+        lv2:scalePoint [ rdfs:label "0003" ; rdf:value 2 ] ;
+        lv2:scalePoint [ rdfs:label "0004" ; rdf:value 3 ] ;
+        lv2:scalePoint [ rdfs:label "0005" ; rdf:value 4 ] ;
+        lv2:scalePoint [ rdfs:label "0006" ; rdf:value 5 ] ;
+        lv2:scalePoint [ rdfs:label "0007" ; rdf:value 6 ] ;
+        lv2:scalePoint [ rdfs:label "0008" ; rdf:value 7 ] ;
+        lv2:scalePoint [ rdfs:label "0009" ; rdf:value 8 ] ;
+        lv2:scalePoint [ rdfs:label "0010" ; rdf:value 9 ] ;
+        lv2:scalePoint [ rdfs:label "0011" ; rdf:value 10 ] ;
+        lv2:scalePoint [ rdfs:label "0012" ; rdf:value 11 ] ;
+        lv2:scalePoint [ rdfs:label "0013" ; rdf:value 12 ] ;
+        lv2:scalePoint [ rdfs:label "0014" ; rdf:value 13 ] ;
+        lv2:scalePoint [ rdfs:label "0015" ; rdf:value 14 ] ;
+        lv2:scalePoint [ rdfs:label "0016" ; rdf:value 15 ] ;
+        lv2:scalePoint [ rdfs:label "0017" ; rdf:value 16 ] ;
+        lv2:scalePoint [ rdfs:label "0018" ; rdf:value 17 ] ;
+        lv2:scalePoint [ rdfs:label "0019" ; rdf:value 18 ] ;
+        lv2:scalePoint [ rdfs:label "0020" ; rdf:value 19 ] ;
+        lv2:scalePoint [ rdfs:label "aguitar" ; rdf:value 20 ] ;
+        lv2:scalePoint [ rdfs:label "altosax" ; rdf:value 21 ] ;
+        lv2:scalePoint [ rdfs:label "birds" ; rdf:value 22 ] ;
+        lv2:scalePoint [ rdfs:label "bitreduced" ; rdf:value 23 ] ;
+        lv2:scalePoint [ rdfs:label "bw_blended" ; rdf:value 24 ] ;
+        lv2:scalePoint [ rdfs:label "bw_perfectwave" ; rdf:value 25 ] ;
+        lv2:scalePoint [ rdfs:label "bw_saw" ; rdf:value 26 ] ;
+        lv2:scalePoint [ rdfs:label "bw_sawbright" ; rdf:value 27 ] ;
+        lv2:scalePoint [ rdfs:label "bw_sawgap" ; rdf:value 28 ] ;
+        lv2:scalePoint [ rdfs:label "bw_sawrounded" ; rdf:value 29 ] ;
+        lv2:scalePoint [ rdfs:label "bw_sin" ; rdf:value 30 ] ;
+        lv2:scalePoint [ rdfs:label "bw_squ" ; rdf:value 31 ] ;
+        lv2:scalePoint [ rdfs:label "bw_squrounded" ; rdf:value 32 ] ;
+        lv2:scalePoint [ rdfs:label "bw_tri" ; rdf:value 33 ] ;
+        lv2:scalePoint [ rdfs:label "c604" ; rdf:value 34 ] ;
+        lv2:scalePoint [ rdfs:label "cello" ; rdf:value 35 ] ;
+        lv2:scalePoint [ rdfs:label "clarinett" ; rdf:value 36 ] ;
+        lv2:scalePoint [ rdfs:label "clavinet" ; rdf:value 37 ] ;
+        lv2:scalePoint [ rdfs:label "dbass" ; rdf:value 38 ] ;
+        lv2:scalePoint [ rdfs:label "distorted" ; rdf:value 39 ] ;
+        lv2:scalePoint [ rdfs:label "ebass" ; rdf:value 40 ] ;
+        lv2:scalePoint [ rdfs:label "eguitar" ; rdf:value 41 ] ;
+        lv2:scalePoint [ rdfs:label "eorgan" ; rdf:value 42 ] ;
+        lv2:scalePoint [ rdfs:label "epiano" ; rdf:value 43 ] ;
+        lv2:scalePoint [ rdfs:label "flute" ; rdf:value 44 ] ;
+        lv2:scalePoint [ rdfs:label "fmsynth" ; rdf:value 45 ] ;
+        lv2:scalePoint [ rdfs:label "granular" ; rdf:value 46 ] ;
+        lv2:scalePoint [ rdfs:label "hdrawn" ; rdf:value 47 ] ;
+        lv2:scalePoint [ rdfs:label "hvoice" ; rdf:value 48 ] ;
+        lv2:scalePoint [ rdfs:label "linear" ; rdf:value 49 ] ;
+        lv2:scalePoint [ rdfs:label "oboe" ; rdf:value 50 ] ;
+        lv2:scalePoint [ rdfs:label "oscchip" ; rdf:value 51 ] ;
+        lv2:scalePoint [ rdfs:label "overtone" ; rdf:value 52 ] ;
+        lv2:scalePoint [ rdfs:label "piano" ; rdf:value 53 ] ;
+        lv2:scalePoint [ rdfs:label "pluckalgo" ; rdf:value 54 ] ;
+        lv2:scalePoint [ rdfs:label "raw" ; rdf:value 55 ] ;
+        lv2:scalePoint [ rdfs:label "sinharm" ; rdf:value 56 ] ;
+        lv2:scalePoint [ rdfs:label "snippets" ; rdf:value 57 ] ;
+        lv2:scalePoint [ rdfs:label "stereo" ; rdf:value 58 ] ;
+        lv2:scalePoint [ rdfs:label "stringbox" ; rdf:value 59 ] ;
+        lv2:scalePoint [ rdfs:label "symetric" ; rdf:value 60 ] ;
+        lv2:scalePoint [ rdfs:label "theremin" ; rdf:value 61 ] ;
+        lv2:scalePoint [ rdfs:label "vgame" ; rdf:value 62 ] ;
+        lv2:scalePoint [ rdfs:label "vgamebasic" ; rdf:value 63 ] ;
+        lv2:scalePoint [ rdfs:label "violin" ; rdf:value 64 ] ;
+    ] , [
+        a lv2:InputPort ;
+        a lv2:ControlPort ;
+        lv2:index 5 ;
+        lv2:symbol "wave_a" ;
+        lv2:name "Wave Num A" ;
+        lv2:portProperty lv2:integer ;
+        lv2:default 0 ;
+        lv2:minimum 0 ;
+        lv2:maximum 199 ;
+    ] , [
+        a lv2:InputPort ;
+        a lv2:ControlPort ;
+        lv2:index 6 ;
+        lv2:symbol "coarse_a" ;
+        lv2:name "Coarse A" ;
+        lv2:portProperty lv2:integer ;
+        lv2:default 0 ;
+        lv2:minimum -24 ;
+        lv2:maximum 24 ;
+    ] , [
+        a lv2:InputPort ;
+        a lv2:ControlPort ;
+        lv2:index 7 ;
+        lv2:symbol "fine_a" ;
+        lv2:name "Fine A" ;
+        lv2:default 0.0 ;
+        lv2:minimum -100.0 ;
+        lv2:maximum 100.0 ;
+    ] , [
+        a lv2:InputPort ;
+        a lv2:ControlPort ;
+        lv2:index 8 ;
+        lv2:symbol "folder_b" ;
+        lv2:name "Folder B" ;
+        lv2:portProperty lv2:integer ;
+        lv2:portProperty lv2:enumeration ;
+        lv2:default 0 ;
+        lv2:minimum 0 ;
+        lv2:maximum 64 ;
+        lv2:scalePoint [ rdfs:label "0001" ; rdf:value 0 ] ;
+        lv2:scalePoint [ rdfs:label "0002" ; rdf:value 1 ] ;
+        lv2:scalePoint [ rdfs:label "0003" ; rdf:value 2 ] ;
+        lv2:scalePoint [ rdfs:label "0004" ; rdf:value 3 ] ;
+        lv2:scalePoint [ rdfs:label "0005" ; rdf:value 4 ] ;
+        lv2:scalePoint [ rdfs:label "0006" ; rdf:value 5 ] ;
+        lv2:scalePoint [ rdfs:label "0007" ; rdf:value 6 ] ;
+        lv2:scalePoint [ rdfs:label "0008" ; rdf:value 7 ] ;
+        lv2:scalePoint [ rdfs:label "0009" ; rdf:value 8 ] ;
+        lv2:scalePoint [ rdfs:label "0010" ; rdf:value 9 ] ;
+        lv2:scalePoint [ rdfs:label "0011" ; rdf:value 10 ] ;
+        lv2:scalePoint [ rdfs:label "0012" ; rdf:value 11 ] ;
+        lv2:scalePoint [ rdfs:label "0013" ; rdf:value 12 ] ;
+        lv2:scalePoint [ rdfs:label "0014" ; rdf:value 13 ] ;
+        lv2:scalePoint [ rdfs:label "0015" ; rdf:value 14 ] ;
+        lv2:scalePoint [ rdfs:label "0016" ; rdf:value 15 ] ;
+        lv2:scalePoint [ rdfs:label "0017" ; rdf:value 16 ] ;
+        lv2:scalePoint [ rdfs:label "0018" ; rdf:value 17 ] ;
+        lv2:scalePoint [ rdfs:label "0019" ; rdf:value 18 ] ;
+        lv2:scalePoint [ rdfs:label "0020" ; rdf:value 19 ] ;
+        lv2:scalePoint [ rdfs:label "aguitar" ; rdf:value 20 ] ;
+        lv2:scalePoint [ rdfs:label "altosax" ; rdf:value 21 ] ;
+        lv2:scalePoint [ rdfs:label "birds" ; rdf:value 22 ] ;
+        lv2:scalePoint [ rdfs:label "bitreduced" ; rdf:value 23 ] ;
+        lv2:scalePoint [ rdfs:label "bw_blended" ; rdf:value 24 ] ;
+        lv2:scalePoint [ rdfs:label "bw_perfectwave" ; rdf:value 25 ] ;
+        lv2:scalePoint [ rdfs:label "bw_saw" ; rdf:value 26 ] ;
+        lv2:scalePoint [ rdfs:label "bw_sawbright" ; rdf:value 27 ] ;
+        lv2:scalePoint [ rdfs:label "bw_sawgap" ; rdf:value 28 ] ;
+        lv2:scalePoint [ rdfs:label "bw_sawrounded" ; rdf:value 29 ] ;
+        lv2:scalePoint [ rdfs:label "bw_sin" ; rdf:value 30 ] ;
+        lv2:scalePoint [ rdfs:label "bw_squ" ; rdf:value 31 ] ;
+        lv2:scalePoint [ rdfs:label "bw_squrounded" ; rdf:value 32 ] ;
+        lv2:scalePoint [ rdfs:label "bw_tri" ; rdf:value 33 ] ;
+        lv2:scalePoint [ rdfs:label "c604" ; rdf:value 34 ] ;
+        lv2:scalePoint [ rdfs:label "cello" ; rdf:value 35 ] ;
+        lv2:scalePoint [ rdfs:label "clarinett" ; rdf:value 36 ] ;
+        lv2:scalePoint [ rdfs:label "clavinet" ; rdf:value 37 ] ;
+        lv2:scalePoint [ rdfs:label "dbass" ; rdf:value 38 ] ;
+        lv2:scalePoint [ rdfs:label "distorted" ; rdf:value 39 ] ;
+        lv2:scalePoint [ rdfs:label "ebass" ; rdf:value 40 ] ;
+        lv2:scalePoint [ rdfs:label "eguitar" ; rdf:value 41 ] ;
+        lv2:scalePoint [ rdfs:label "eorgan" ; rdf:value 42 ] ;
+        lv2:scalePoint [ rdfs:label "epiano" ; rdf:value 43 ] ;
+        lv2:scalePoint [ rdfs:label "flute" ; rdf:value 44 ] ;
+        lv2:scalePoint [ rdfs:label "fmsynth" ; rdf:value 45 ] ;
+        lv2:scalePoint [ rdfs:label "granular" ; rdf:value 46 ] ;
+        lv2:scalePoint [ rdfs:label "hdrawn" ; rdf:value 47 ] ;
+        lv2:scalePoint [ rdfs:label "hvoice" ; rdf:value 48 ] ;
+        lv2:scalePoint [ rdfs:label "linear" ; rdf:value 49 ] ;
+        lv2:scalePoint [ rdfs:label "oboe" ; rdf:value 50 ] ;
+        lv2:scalePoint [ rdfs:label "oscchip" ; rdf:value 51 ] ;
+        lv2:scalePoint [ rdfs:label "overtone" ; rdf:value 52 ] ;
+        lv2:scalePoint [ rdfs:label "piano" ; rdf:value 53 ] ;
+        lv2:scalePoint [ rdfs:label "pluckalgo" ; rdf:value 54 ] ;
+        lv2:scalePoint [ rdfs:label "raw" ; rdf:value 55 ] ;
+        lv2:scalePoint [ rdfs:label "sinharm" ; rdf:value 56 ] ;
+        lv2:scalePoint [ rdfs:label "snippets" ; rdf:value 57 ] ;
+        lv2:scalePoint [ rdfs:label "stereo" ; rdf:value 58 ] ;
+        lv2:scalePoint [ rdfs:label "stringbox" ; rdf:value 59 ] ;
+        lv2:scalePoint [ rdfs:label "symetric" ; rdf:value 60 ] ;
+        lv2:scalePoint [ rdfs:label "theremin" ; rdf:value 61 ] ;
+        lv2:scalePoint [ rdfs:label "vgame" ; rdf:value 62 ] ;
+        lv2:scalePoint [ rdfs:label "vgamebasic" ; rdf:value 63 ] ;
+        lv2:scalePoint [ rdfs:label "violin" ; rdf:value 64 ] ;
+    ] , [
+        a lv2:InputPort ;
+        a lv2:ControlPort ;
+        lv2:index 9 ;
+        lv2:symbol "wave_b" ;
+        lv2:name "Wave Num B" ;
+        lv2:portProperty lv2:integer ;
+        lv2:default 0 ;
+        lv2:minimum 0 ;
+        lv2:maximum 199 ;
+    ] , [
+        a lv2:InputPort ;
+        a lv2:ControlPort ;
+        lv2:index 10 ;
+        lv2:symbol "coarse_b" ;
+        lv2:name "Coarse B" ;
+        lv2:portProperty lv2:integer ;
+        lv2:default 0 ;
+        lv2:minimum -24 ;
+        lv2:maximum 24 ;
+    ] , [
+        a lv2:InputPort ;
+        a lv2:ControlPort ;
+        lv2:index 11 ;
+        lv2:symbol "fine_b" ;
+        lv2:name "Fine B" ;
+        lv2:default 0.0 ;
+        lv2:minimum -100.0 ;
+        lv2:maximum 100.0 ;
+    ] , [
+        a lv2:InputPort ;
+        a lv2:ControlPort ;
+        lv2:index 12 ;
+        lv2:symbol "crossfade" ;
+        lv2:name "A/B Mix" ;
+        lv2:default 0.5 ;
+        lv2:minimum 0.0 ;
+        lv2:maximum 1.0 ;
+    ] , [
+        a lv2:InputPort ;
+        a lv2:ControlPort ;
+        lv2:index 13 ;
+        lv2:symbol "ringmod" ;
+        lv2:name "Ring Mod Amount" ;
+        lv2:default 0.0 ;
+        lv2:minimum 0.0 ;
+        lv2:maximum 1.0 ;
+    ] , [
+        a lv2:InputPort ;
+        a lv2:ControlPort ;
+        lv2:index 14 ;
+        lv2:symbol "voice_mode" ;
+        lv2:name "Voice Mode" ;
+        lv2:portProperty lv2:integer ;
+        lv2:portProperty lv2:enumeration ;
+        lv2:default 0 ;
+        lv2:minimum 0 ;
+        lv2:maximum 2 ;
+        lv2:scalePoint [ rdfs:label "Poly" ; rdf:value 0 ] ;
+        lv2:scalePoint [ rdfs:label "Mono" ; rdf:value 1 ] ;
+        lv2:scalePoint [ rdfs:label "Unison" ; rdf:value 2 ] ;
+    ] , [
+        a lv2:InputPort ;
+        a lv2:ControlPort ;
+        lv2:index 15 ;
+        lv2:symbol "detune" ;
+        lv2:name "Detune/Slop" ;
+        lv2:default 10.0 ;
+        lv2:minimum 0.0 ;
+        lv2:maximum 100.0 ;
+    ] , [
+        a lv2:InputPort ;
+        a lv2:ControlPort ;
+        lv2:index 16 ;
+        lv2:symbol "spread" ;
+        lv2:name "Spread" ;
+        lv2:default 0.5 ;
+        lv2:minimum 0.0 ;
+        lv2:maximum 1.0 ;
+    ] .

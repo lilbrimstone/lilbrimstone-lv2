@@ -1,0 +1,9 @@
+build/
+*.o
+*.so
+*.dll
+*.dylib
+*.lv2/
+*.zip
+GNUmakefile
+release.sh

@@ -1,0 +1,309 @@
+@prefix doap:  <http://usefulinc.com/ns/doap#> .
+@prefix lv2:   <http://lv2plug.in/ns/lv2core#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix units: <http://lv2plug.in/ns/extensions/units#> .
+@prefix atom:  <http://lv2plug.in/ns/ext/atom#> .
+@prefix midi:  <http://lv2plug.in/ns/ext/midi#> .
+@prefix urid:  <http://lv2plug.in/ns/ext/urid#> .
+
+<https://github.com/lilbrimstone/juno>
+    a lv2:Plugin, lv2:InstrumentPlugin ;
+    doap:name "LilBrimstone Juno" ;
+    doap:license <http://opensource.org/licenses/isc> ;
+    lv2:optionalFeature lv2:hardRTCapable ;
+    lv2:requiredFeature urid:map ;
+    
+    lv2:port [
+        a lv2:InputPort, atom:AtomPort ;
+        atom:bufferType atom:Sequence ;
+        atom:supports midi:MidiEvent ;
+        lv2:index 0 ;
+        lv2:symbol "midi_in" ;
+        lv2:name "MIDI In"
+    ], [
+        
+        # --- DCO ---
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 1 ;
+        lv2:symbol "pulse_on" ;
+        lv2:name "Pulse On" ;
+        lv2:default 1 ;
+        lv2:minimum 0 ;
+        lv2:maximum 1 ;
+        lv2:portProperty lv2:toggled, lv2:integer ;
+    ], [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 2 ;
+        lv2:symbol "saw_on" ;
+        lv2:name "Saw On" ;
+        lv2:default 1 ;
+        lv2:minimum 0 ;
+        lv2:maximum 1 ;
+        lv2:portProperty lv2:toggled, lv2:integer ;
+    ], [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 3 ;
+        lv2:symbol "sub_level" ;
+        lv2:name "Sub Level" ;
+        lv2:default 2.0 ;
+        lv2:minimum 0.0 ;
+        lv2:maximum 10.0 ;
+    ], [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 4 ;
+        lv2:symbol "noise_level" ;
+        lv2:name "Noise Level" ;
+        lv2:default 0.0 ;
+        lv2:minimum 0.0 ;
+        lv2:maximum 10.0 ;
+    ], [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 5 ;
+        lv2:symbol "pwm_val" ;
+        lv2:name "PWM Value" ;
+        lv2:default 4.0 ;
+        lv2:minimum 0.0 ;
+        lv2:maximum 10.0 ;
+    ], [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 6 ;
+        lv2:symbol "pwm_mode" ;
+        lv2:name "PWM Mode" ;
+        lv2:default 1 ;
+        lv2:minimum 0 ;
+        lv2:maximum 2 ;
+        lv2:portProperty lv2:enumeration, lv2:integer ;
+        lv2:scalePoint [ rdfs:label "Man"; rdf:value 0 ] ;
+        lv2:scalePoint [ rdfs:label "LFO"; rdf:value 1 ] ;
+        lv2:scalePoint [ rdfs:label "Env"; rdf:value 2 ] ;
+    ], [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 7 ;
+        lv2:symbol "dco_lfo" ;
+        lv2:name "DCO LFO" ;
+        lv2:default 0.0 ;
+        lv2:minimum 0.0 ;
+        lv2:maximum 10.0 ;
+
+    # --- HPF ---
+    ], [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 8 ;
+        lv2:symbol "hpf" ;
+        lv2:name "HPF Freq" ;
+        lv2:default 0 ;
+        lv2:minimum 0 ;
+        lv2:maximum 3 ;
+        lv2:portProperty lv2:enumeration, lv2:integer ;
+        lv2:scalePoint [ rdfs:label "0"; rdf:value 0 ] ;
+        lv2:scalePoint [ rdfs:label "1"; rdf:value 1 ] ;
+        lv2:scalePoint [ rdfs:label "2"; rdf:value 2 ] ;
+        lv2:scalePoint [ rdfs:label "3"; rdf:value 3 ] ;
+
+    # --- VCF ---
+    ], [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 9 ;
+        lv2:symbol "vcf_freq" ;
+        lv2:name "VCF Freq" ;
+        lv2:default 5.5 ;
+        lv2:minimum 0.0 ;
+        lv2:maximum 10.0 ;
+    ], [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 10 ;
+        lv2:symbol "vcf_res" ;
+        lv2:name "VCF Res" ;
+        lv2:default 0.0 ;
+        lv2:minimum 0.0 ;
+        lv2:maximum 10.0 ;
+    ], [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 11 ;
+        lv2:symbol "vcf_env" ;
+        lv2:name "VCF Env" ;
+        lv2:default 4.0 ;
+        lv2:minimum 0.0 ;
+        lv2:maximum 10.0 ;
+    ], [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 12 ;
+        lv2:symbol "vcf_env_pol" ;
+        lv2:name "VCF Env Pol" ;
+        lv2:default 0 ;
+        lv2:minimum 0 ;
+        lv2:maximum 1 ;
+        lv2:portProperty lv2:enumeration, lv2:integer ;
+        lv2:scalePoint [ rdfs:label "Pos"; rdf:value 0 ] ;
+        lv2:scalePoint [ rdfs:label "Neg"; rdf:value 1 ] ;
+    ], [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 13 ;
+        lv2:symbol "vcf_lfo" ;
+        lv2:name "VCF LFO" ;
+        lv2:default 0.0 ;
+        lv2:minimum 0.0 ;
+        lv2:maximum 10.0 ;
+    ], [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 14 ;
+        lv2:symbol "vcf_kybd" ;
+        lv2:name "VCF Kybd" ;
+        lv2:default 8.0 ;
+        lv2:minimum 0.0 ;
+        lv2:maximum 10.0 ;
+        
+    # --- VCA ---
+    ], [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 15 ;
+        lv2:symbol "vca_mode" ;
+        lv2:name "VCA Mode" ;
+        lv2:default 1 ;
+        lv2:minimum 0 ;
+        lv2:maximum 1 ;
+        lv2:portProperty lv2:enumeration, lv2:integer ;
+        lv2:scalePoint [ rdfs:label "Gate"; rdf:value 0 ] ;
+        lv2:scalePoint [ rdfs:label "Env"; rdf:value 1 ] ;
+
+    # --- ENV ---
+    ], [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 16 ;
+        lv2:symbol "env_a" ;
+        lv2:name "Env A" ;
+        lv2:default 3.0 ;
+        lv2:minimum 0.0 ;
+        lv2:maximum 10.0 ;
+    ], [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 17 ;
+        lv2:symbol "env_d" ;
+        lv2:name "Env D" ;
+        lv2:default 4.0 ;
+        lv2:minimum 0.0 ;
+        lv2:maximum 10.0 ;
+    ], [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 18 ;
+        lv2:symbol "env_s" ;
+        lv2:name "Env S" ;
+        lv2:default 8.0 ;
+        lv2:minimum 0.0 ;
+        lv2:maximum 10.0 ;
+    ], [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 19 ;
+        lv2:symbol "env_r" ;
+        lv2:name "Env R" ;
+        lv2:default 5.0 ;
+        lv2:minimum 0.0 ;
+        lv2:maximum 10.0 ;
+        
+    # --- LFO ---
+    ], [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 20 ;
+        lv2:symbol "lfo_rate" ;
+        lv2:name "LFO Rate" ;
+        lv2:default 4.5 ;
+        lv2:minimum 0.0 ;
+        lv2:maximum 10.0 ;
+    ], [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 21 ;
+        lv2:symbol "lfo_delay" ;
+        lv2:name "LFO Delay" ;
+        lv2:default 0.0 ;
+        lv2:minimum 0.0 ;
+        lv2:maximum 10.0 ;
+
+    # --- CHORUS ---
+    ], [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 22 ;
+        lv2:symbol "chorus" ;
+        lv2:name "Chorus" ;
+        lv2:default 1 ;
+        lv2:minimum 0 ;
+        lv2:maximum 3 ;
+        lv2:portProperty lv2:enumeration, lv2:integer ;
+        lv2:scalePoint [ rdfs:label "Off"; rdf:value 0 ] ;
+        lv2:scalePoint [ rdfs:label "I"; rdf:value 1 ] ;
+        lv2:scalePoint [ rdfs:label "II"; rdf:value 2 ] ;
+        lv2:scalePoint [ rdfs:label "I+II"; rdf:value 3 ] ;
+        
+    # --- GLOBAL ---
+    ], [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 23 ;
+        lv2:symbol "master_vol" ;
+        lv2:name "Master Vol" ;
+        lv2:default 6.0 ;
+        lv2:minimum 0.0 ;
+        lv2:maximum 10.0 ;
+    ], [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 24 ;
+        lv2:symbol "portamento" ;
+        lv2:name "Portamento" ;
+        lv2:default 0.0 ;
+        lv2:minimum 0.0 ;
+        lv2:maximum 10.0 ;
+    ], [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 25 ;
+        lv2:symbol "voice_mode" ;
+        lv2:name "Voice Mode" ;
+        lv2:default 0 ;
+        lv2:minimum 0 ;
+        lv2:maximum 4 ;
+        lv2:portProperty lv2:enumeration, lv2:integer ;
+        lv2:scalePoint [ rdfs:label "Poly 1"; rdf:value 0 ] ;
+        lv2:scalePoint [ rdfs:label "Poly 2"; rdf:value 1 ] ;
+        lv2:scalePoint [ rdfs:label "Mono"; rdf:value 2 ] ;
+        lv2:scalePoint [ rdfs:label "Legato"; rdf:value 3 ] ;
+        lv2:scalePoint [ rdfs:label "Unison"; rdf:value 4 ] ;
+    ], [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 26 ;
+        lv2:symbol "detune" ;
+        lv2:name "Detune" ;
+        lv2:default 0.0 ;
+        lv2:minimum 0.0 ;
+        lv2:maximum 10.0 ;
+    ], [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 27 ;
+        lv2:symbol "spread" ;
+        lv2:name "Spread" ;
+        lv2:default 0.0 ;
+        lv2:minimum 0.0 ;
+        lv2:maximum 10.0 ;
+    ], [
+        a lv2:InputPort, lv2:ControlPort ;
+        lv2:index 28 ;
+        lv2:symbol "oversample" ;
+        lv2:name "Oversample" ;
+        lv2:default 3 ;
+        lv2:minimum 0 ;
+        lv2:maximum 3 ;
+        lv2:portProperty lv2:enumeration, lv2:integer ;
+        lv2:scalePoint [ rdfs:label "1x"; rdf:value 0 ] ;
+        lv2:scalePoint [ rdfs:label "2x"; rdf:value 1 ] ;
+        lv2:scalePoint [ rdfs:label "3x"; rdf:value 2 ] ;
+        lv2:scalePoint [ rdfs:label "4x"; rdf:value 3 ] ;
+
+    # --- AUDIO OUT ---
+    ], [
+        a lv2:OutputPort, lv2:AudioPort ;
+        lv2:index 29 ;
+        lv2:symbol "out_l" ;
+        lv2:name "Left Out"
+    ], [
+        a lv2:OutputPort, lv2:AudioPort ;
+        lv2:index 30 ;
+        lv2:symbol "out_r" ;
+        lv2:name "Right Out"
+    ] .
