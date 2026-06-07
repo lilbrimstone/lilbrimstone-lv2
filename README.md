@@ -19,6 +19,8 @@ Designed by Lilbrimstone, mostly coded by AI (Gemini 3.1 Pro for the most part)
 
 More to come...
 
+# Install
+
 Download / extract the zip and copy to the dspcard/Plugins/lv2 folder on your S2400. Sync DSP Card via Effects menu and power cycle (Shift + Back + Enter)
 
 **Commands:**
